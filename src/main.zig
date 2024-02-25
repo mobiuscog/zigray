@@ -1,8 +1,7 @@
 const std = @import("std");
 const rand = std.crypto.random;
 
-const raylib = @import("raylib");
-
+const Renderer = @import("renderer.zig").Renderer;
 const Canvas = @import("canvas.zig").Canvas;
 
 const image_width: i32 = 800;
@@ -10,36 +9,20 @@ const image_height: i32 = 800;
 
 pub fn main() !void {
 
-    initialiseRenderer("Zigray", image_width, image_height);
-    defer closeRenderer();
-
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
     defer _ = gpa.deinit();
 
+    const renderer: Renderer = try Renderer.init("Zigray", image_width, image_height, allocator);
+    defer renderer.deinit();
+
     const canvas = try Canvas.init(image_width, image_height, allocator);
     defer canvas.deinit();
-
-    var origin: raylib.Image = raylib.GenImageColor(image_width, image_height, raylib.RED);
-    raylib.ImageFormat(&origin, 7);
-    const texture: raylib.Texture2D = raylib.LoadTextureFromImage(origin);
-    raylib.UnloadImage(origin);
-    defer raylib.UnloadTexture(texture);
-
-    while (!raylib.WindowShouldClose()) {
+    
+    while (renderer.isRunning()) {
         update(canvas);
-        render(texture, canvas);
+        renderer.render(canvas);
     }
-}
-
-fn initialiseRenderer(name: [*:0]const u8, width: i32, height: i32) void {
-    raylib.SetConfigFlags(raylib.ConfigFlags{ .FLAG_WINDOW_RESIZABLE = true });
-    raylib.InitWindow(width, height, name);
-    raylib.SetTargetFPS(60);
-}
-
-fn closeRenderer() void {
-    raylib.CloseWindow();
 }
 
 fn update(canvas: Canvas) void {
@@ -64,13 +47,3 @@ fn update(canvas: Canvas) void {
     }
 }
 
-fn render(texture: raylib.Texture2D, canvas: Canvas) void {
-    raylib.BeginDrawing();
-    defer raylib.EndDrawing();
-
-    raylib.ClearBackground(raylib.BLACK);
-
-    raylib.UpdateTexture(texture, canvas.getBuffer());
-
-    raylib.DrawTexture(texture, 0,0, raylib.WHITE);
-}
