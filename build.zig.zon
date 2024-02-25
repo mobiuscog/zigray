@@ -1,0 +1,36 @@
+.{
+    .name = "zigray",
+    // This is a [Semantic Version](https://semver.org/).
+    // In a future version of Zig it will be used for package deduplication.
+    .version = "0.1.0",
+
+    // This field is optional.
+    // This is currently advisory only; Zig does not yet do anything
+    // with this value.
+    //.minimum_zig_version = "0.11.0",
+
+    // This field is optional.
+    // Each dependency must either provide a `url` and `hash`, or a `path`.
+    // `zig build --fetch` can be used to fetch all dependencies of a package, recursively.
+    // Once all dependencies are fetched, `zig build` no longer requires
+    // internet connectivity.
+    .dependencies = .{
+        .@"raylib.zig" = .{
+            .url = "https://github.com/ryupold/raylib.zig/archive/44360a577aec4916e32337f9a900cd407aca4e13.tar.gz",
+            .hash = "1220a0d451554e001d2327c20a233e7c7b59db69515391dfe0bb0a1127634c0afa8f",
+        },
+    },
+    .paths = .{
+        // This makes *all* files, recursively, included in this package. It is generally
+        // better to explicitly list the files and directories instead, to insure that
+        // fetching from tarballs, file system paths, and version control all result
+        // in the same contents hash.
+        "",
+        // For example...
+        //"build.zig",
+        //"build.zig.zon",
+        //"src",
+        //"LICENSE",
+        //"README.md",
+    },
+}
