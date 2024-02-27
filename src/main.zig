@@ -9,13 +9,6 @@ const Ray = @import("ray.zig").Ray;
 const Vec3 = @import("vector.zig").Vec3;
 const Point3 = Vec3;
 
-
-pub fn ray_colour(ray: Ray) Colour {
-    const unit_direction = ray.direction.unit_vector();
-    const a = 0.5 * (unit_direction.y + 1.0);
-    return Colours.WHITE.multiply(1.0 - a).add(Colours.SKY.multiply(a));
-}
-
 const PixelContext = struct {
     pixel_delta_u: Vec3,
     pixel_delta_v: Vec3,
@@ -86,7 +79,7 @@ fn update(canvas: Canvas, context: PixelContext) void {
                 .add(context.pixel_delta_v.multiply(yf));
             const ray_direction = pixel_center.subtract(context.camera_center);
             const ray = Ray { .origin = context.camera_center, .direction = ray_direction };
-            const pixel_colour = ray_colour(ray);
+            const pixel_colour = ray.colour();
 
             const X:i32 = @intCast(x);
             const Y:i32 = @intCast(y);

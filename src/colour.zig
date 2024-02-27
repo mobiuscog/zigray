@@ -4,6 +4,7 @@ pub const Colours = struct {
     pub const BLACK = Colour { .r = 0, .g = 0, .b = 0 };
     pub const WHITE = Colour { .r = 1, .g = 1, .b = 1 };
     pub const SKY = Colour { .r = 0.5, .g = 0.7, .b = 1 };
+    pub const RED = Colour { .r = 1, .g = 0, .b = 0 };
 };
 
 pub const Colour = struct {
