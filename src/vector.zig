@@ -1,10 +1,16 @@
 const std = @import("std");
 
+pub const Point3 = Vec3;
+
 // There are native optimised types for this in Zig, but they are recreated here for the sake of learning
 pub const Vec3 = struct {
     x: f64,
     y: f64,
     z: f64,
+
+    pub fn init(x: f64, y: f64, z: f64) Vec3 {
+        return .{ .x = x, .y = y, .z = z,};
+    }
 
     pub inline fn negate(self: Vec3) Vec3 {
         return Vec3 { .x = -self.x, .y = -self.y, .z = -self.z };

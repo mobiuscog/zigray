@@ -1,17 +1,21 @@
 const std = @import("std");
 
-pub const Colours = struct {
-    pub const BLACK = Colour { .r = 0, .g = 0, .b = 0 };
-    pub const WHITE = Colour { .r = 1, .g = 1, .b = 1 };
-    pub const SKY = Colour { .r = 0.5, .g = 0.7, .b = 1 };
-    pub const RED = Colour { .r = 1, .g = 0, .b = 0 };
-};
-
 pub const Colour = struct {
     r: f64,
     g: f64,
     b: f64,
     a: f64 = 1.0,
+
+    pub const Colours = struct {
+        pub const BLACK = Colour.init(0, 0, 0);
+        pub const WHITE = Colour.init(1, 1, 1);
+        pub const SKY = Colour.init(0.5, 0.7, 1);
+        pub const RED = Colour.init(1, 0, 0);
+    };
+
+    pub fn init(red: f64, green: f64, blue: f64) Colour {
+        return .{ .r = red, .g = green, .b = blue, };
+    }
 
     pub fn add(self: Colour, other: Colour) Colour {
         return Colour {

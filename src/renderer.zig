@@ -2,7 +2,7 @@ const std = @import("std");
 
 const raylib = @import("raylib");
 
-const Canvas = @import("canvas.zig").Canvas;
+const Canvas = @import("rtweekend.zig").Canvas;
 
 pub const Renderer = struct {
     width: u32,
