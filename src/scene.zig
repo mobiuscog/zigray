@@ -33,15 +33,12 @@ pub const Scene = struct {
         allocator: std.mem.Allocator,
     },
 
-    has_printed: bool,
-
     pub fn init(allocator: std.mem.Allocator) !Scene {
         return Scene {
             .internal = .{
                 .objects = std.ArrayList(Hittable).init(allocator),
                 .allocator = allocator,
             },
-            .has_printed = false,
         };
     }
 
@@ -65,11 +62,6 @@ pub const Scene = struct {
         var temp_rec = Hittable.HitRecord {.p = .{ .x = 0, .y = 0, .z = 0}, .is_front = false, .normal = .{ .x = 0, .y = 0, .z = 0}, .t = 0, };
         var hit_anything = false;
         var closest_so_far = tmax;
-
-        if (!self.has_printed) {
-            self.has_printed = true;
-            std.debug.print("item count {}", .{self.internal.objects.items.len});
-        }
 
         for (self.internal.objects.items) |object| {
             if (object.hit(r, tmin, closest_so_far, &temp_rec)) {

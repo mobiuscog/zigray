@@ -9,7 +9,6 @@ pub const Canvas = struct {
 
     pub fn init(width: u32, height: u32, allocator: std.mem.Allocator) !Canvas {
         const allocated = try allocator.alloc(u8, width * height * 4);
-        std.log.debug("Created canvas of size {},{}", .{width, height});
         return Canvas { .width = width, .height = height, .buffer = allocated, .allocator = allocator };
     }
 
