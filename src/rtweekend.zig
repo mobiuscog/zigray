@@ -6,6 +6,7 @@ pub usingnamespace @import("canvas.zig");
 pub usingnamespace @import("renderer.zig");
 pub usingnamespace @import("ray.zig");
 pub usingnamespace @import("scene.zig");
+pub usingnamespace @import("camera.zig");
 
 pub const INFINITY = std.math.inf(f64);
 pub const PI = std.math.pi;
