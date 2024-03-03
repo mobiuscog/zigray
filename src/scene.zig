@@ -33,14 +33,14 @@ pub fn asHittable(self: *Self) Hittable {
     };
 }
 
-pub fn hit(ptr: *anyopaque, r: rt.Ray, tmin: f64, tmax: f64, rec: *Hittable.HitRecord) bool {
+pub fn hit(ptr: *anyopaque, r: rt.Ray, ray_t: rt.Interval, rec: *Hittable.HitRecord) bool {
     const self: *Self = @ptrCast(@alignCast(ptr));
     var temp_rec = Hittable.HitRecord {.p = .{ .x = 0, .y = 0, .z = 0}, .is_front = false, .normal = .{ .x = 0, .y = 0, .z = 0}, .t = 0, };
     var hit_anything = false;
-    var closest_so_far = tmax;
+    var closest_so_far = ray_t.max;
 
     for (self.internal.objects.items) |object| {
-        if (object.hit(r, tmin, closest_so_far, &temp_rec)) {
+        if (object.hit(r, rt.Interval.init(ray_t.min, closest_so_far), &temp_rec)) {
             hit_anything = true;
             closest_so_far = temp_rec.t;
             rec.* = temp_rec;
@@ -68,10 +68,10 @@ pub const Hittable = struct {
     };
 
     ptr: *anyopaque,
-    hitFn: *const fn (ptr: *anyopaque, ray: rt.Ray, tmin: f64, tmax: f64, record: *HitRecord) bool,
+    hitFn: *const fn (ptr: *anyopaque, ray: rt.Ray, ray_t: rt.Interval, record: *HitRecord) bool,
 
-    pub fn hit(self: Hittable, ray: rt.Ray, tmin: f64, tmax: f64, record: *HitRecord) bool {
-        return self.hitFn(self.ptr, ray, tmin, tmax, record);
+    pub fn hit(self: Hittable, ray: rt.Ray, ray_t: rt.Interval, record: *HitRecord) bool {
+        return self.hitFn(self.ptr, ray, ray_t, record);
     }
 };
 
@@ -90,7 +90,7 @@ pub const Sphere = struct {
         };
     }
 
-    pub fn hit(ptr: *anyopaque, ray: rt.Ray, tmin: f64, tmax: f64, record: *Hittable.HitRecord) bool {
+    pub fn hit(ptr: *anyopaque, ray: rt.Ray, ray_t: rt.Interval, record: *Hittable.HitRecord) bool {
         const self: *Sphere = @ptrCast(@alignCast(ptr));
         const oc = ray.origin.subtract(self.center);
         const a = ray.direction.lengthSquared();
@@ -106,9 +106,9 @@ pub const Sphere = struct {
 
         // Find the nearest root that lies in the acceptable range
         var root = (-half_b - sqrtd) / a;
-        if (root <= tmin or tmax <= root) {
+        if (!ray_t.surrounds(root)) {
             root = (-half_b + sqrtd) / a;
-            if (root <= tmin or tmax <= root) {
+            if (!ray_t.surrounds(root)) {
                 return false;
             }
         }
