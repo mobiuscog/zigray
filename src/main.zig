@@ -11,7 +11,6 @@ const PixelContext = struct {
 };
 
 pub fn main() !void {
-
     const image_width: i32 = 1600;
     const aspect_ratio = 16.0 / 9.0;
 

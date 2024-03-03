@@ -1,7 +1,6 @@
 const std = @import("std");
 
 pub usingnamespace @import("vector.zig");
-pub usingnamespace @import("vector.zig");
 pub usingnamespace @import("colour.zig");
 pub usingnamespace @import("canvas.zig");
 pub usingnamespace @import("renderer.zig");
