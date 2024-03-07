@@ -74,10 +74,7 @@ pub fn update(self: *Self, scene: *rt.Scene) void {
 
             const pixel_colour = ray_colour(ray, scene.asHittable());
 
-            const X:i32 = @intCast(x);
-            const Y:i32 = @intCast(y);
-
-            self.canvas.setPixelWithColour(X, Y, pixel_colour);
+            self.canvas.setPixelWithColour(@intCast(x), @intCast(y), pixel_colour);
         }
     }
     self.renderer.render(self.canvas);

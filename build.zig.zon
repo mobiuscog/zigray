@@ -7,7 +7,7 @@
     // This field is optional.
     // This is currently advisory only; Zig does not yet do anything
     // with this value.
-    .minimum_zig_version = "0.12.0-dev.2925+88b3c1442",
+    .minimum_zig_version = "0.12.0-dev.3161+377ecc6af",
 
     // This field is optional.
     // Each dependency must either provide a `url` and `hash`, or a `path`.
@@ -15,21 +15,15 @@
     // Once all dependencies are fetched, `zig build` no longer requires
     // internet connectivity.
     .dependencies = .{
-        .@"raylib.zig" = .{
-            .url = "https://github.com/ryupold/raylib.zig/archive/44360a577aec4916e32337f9a900cd407aca4e13.tar.gz",
-            .hash = "1220a0d451554e001d2327c20a233e7c7b59db69515391dfe0bb0a1127634c0afa8f",
-        },
     },
     .paths = .{
         // This makes *all* files, recursively, included in this package. It is generally
         // better to explicitly list the files and directories instead, to insure that
         // fetching from tarballs, file system paths, and version control all result
         // in the same contents hash.
-        "",
-        // For example...
-        //"build.zig",
-        //"build.zig.zon",
-        //"src",
+        "build.zig",
+        "build.zig.zon",
+        "src",
         //"LICENSE",
         //"README.md",
     },

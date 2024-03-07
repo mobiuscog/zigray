@@ -52,7 +52,6 @@ pub fn hit(ptr: *anyopaque, r: rt.Ray, ray_t: rt.Interval, rec: *Hittable.HitRec
 
 pub const Hittable = struct {
 
-    const Self = @This();
     pub const HitRecord = struct {
         p: rt.Point3,
         normal: rt.Vec3,

@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const raylib = @import("raylib");
+const raylib = @cImport(@cInclude("raylib.h"));
 
 const Canvas = @import("rtweekend.zig").Canvas;
 
@@ -13,7 +13,7 @@ texture: raylib.Texture2D,
 allocator: std.mem.Allocator,
 
 pub fn init(name: [*:0]const u8, width: u32, height: u32, allocator: std.mem.Allocator) !Self {
-    raylib.SetConfigFlags(raylib.ConfigFlags{ .FLAG_WINDOW_RESIZABLE = true });
+    raylib.SetConfigFlags(raylib.FLAG_WINDOW_RESIZABLE);
     raylib.InitWindow(@intCast(width), @intCast(height), name);
     raylib.SetTargetFPS(60);
     var origin: raylib.Image = raylib.GenImageColor(@intCast(width), @intCast(height), raylib.RED);
