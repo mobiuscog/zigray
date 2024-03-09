@@ -50,7 +50,7 @@ pub fn is_filming(self: *Self) bool {
 
 pub fn ray_colour(ray: rt.Ray, world: rt.Hittable) rt.Colour {
     var rec: rt.Hittable.HitRecord = .{.p = .{ .x = 0, .y = 0, .z = 0}, .is_front = false, .normal = .{ .x = 0, .y = 0, .z = 0}, .t = 0, };
-    if (world.hit(ray, rt.Interval.init(0, rt.INFINITY), &rec)) {
+    if (world.hit(ray, rt.Interval(f64).init(0, rt.INFINITY), &rec)) {
         const tmp = rec.normal.add(.{ .x = 1.0, .y = 1.0, .z = 1.0,}).multiply(0.5);
         return rt.Colour {.r = tmp.x, .g = tmp.y, .b = tmp.z};
     }

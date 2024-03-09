@@ -8,7 +8,7 @@ pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
     defer std.debug.assert(gpa.deinit() == .ok);
-
+    
     var scene = try rt.Scene.init(allocator);
     defer scene.deinit();
     var sphere = rt.Sphere.init(rt.Point3.init(0, 0, -1), 0.5);

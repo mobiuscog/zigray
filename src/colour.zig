@@ -1,4 +1,5 @@
 const std = @import("std");
+const clamp = @import("rtweekend.zig").clamp;
 
 const Self = @This();
 pub const Colour = Self;
@@ -20,22 +21,20 @@ pub fn init(red: f64, green: f64, blue: f64) Self {
 
 pub fn add(self: Self, other: Self) Self {
     return Self {
-        .r = clamp(self.r + other.r),
-        .g = clamp(self.g + other.g),
-        .b = clamp(self.b + other.b),
+        .r = self.r + other.r,
+        .g = self.g + other.g,
+        .b = self.b + other.b,
         .a = self.a,
     };
 }
 
 pub fn multiply(self: Self, scalar: f64) Self {
     return Self {
-        .r = clamp(self.r * scalar),
-        .g = clamp(self.g * scalar),
-        .b = clamp(self.b * scalar),
+        .r = self.r * scalar,
+        .g = self.g * scalar,
+        .b = self.b * scalar,
         .a = self.a,
     };
 }
 
-fn clamp(value: f64) f64 {
-    return @min(1.0, @max(0.0, value));
-}
+
