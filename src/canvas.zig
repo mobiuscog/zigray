@@ -1,6 +1,8 @@
 const std = @import("std");
 
-const Colour = @import("rtweekend.zig").Colour;
+const rt = @import("rtweekend.zig");
+const Colour = rt.Colour;
+const Interval = rt.Interval;
 
 const Self = @This();
 pub const Canvas = Self;
@@ -19,20 +21,25 @@ pub fn deinit(self: Self) void {
     self.allocator.free(self.buffer);
 }
 
-pub fn setPixelWithColour(self: Self, x: i32, y: i32, colour: Colour) void {
+pub fn setPixelWithColour(self: Self, x: i32, y: i32, colour: Colour, samples_per_pixel: u8) void {
     const X: u32 = @intCast(x);
     const Y: u32 = @intCast(y);
 
-    const red: u8 = @intFromFloat(colour.r * 255);
-    const green: u8 = @intFromFloat(colour.g * 255);
-    const blue: u8 = @intFromFloat(colour.b * 255);
-    const alpha: u8 = @intFromFloat(colour.a * 255);
+    const average_colour = colour.divide(@floatFromInt(samples_per_pixel));
+
+    const intensity = Interval(f64).init(0.0, 0.9);
+
+    const red: u8 = @intFromFloat(256 * intensity.clamp(average_colour.r));
+    const green: u8 = @intFromFloat(256 * intensity.clamp(average_colour.g));
+    const blue: u8 = @intFromFloat(256 * intensity.clamp(average_colour.b));
+    const alpha: u8 = @intFromFloat(256 * intensity.clamp(average_colour.a));
 
     const offset = (Y * self.width * 4) + X * 4;
     self.buffer[offset] = red;
     self.buffer[offset+1] = green;
     self.buffer[offset+2] = blue;
     self.buffer[offset+3] = alpha;
+
 }
 
 pub fn getBuffer(self: Self) [*]u8 {

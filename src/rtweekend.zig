@@ -1,4 +1,5 @@
 const std = @import("std");
+const assert = std.debug.assert;
 
 pub usingnamespace @import("vector.zig");
 pub usingnamespace @import("colour.zig");
@@ -32,6 +33,9 @@ pub inline fn random_double_limited(min: f64, max: f64) f64 {
 }
 
 pub fn Interval(comptime T: type) type {
+    assert(@typeInfo(T) == .Float or @typeInfo(T) == .ComptimeFloat
+        or @typeInfo(T) == .Int or @typeInfo(T) == .ComptimeInt);
+
     return struct {
         min: T = INFINITY,
         max: T = -INFINITY,
@@ -52,8 +56,7 @@ pub fn Interval(comptime T: type) type {
         }
 
         pub inline fn clamp(self: Interval(T), value: T) T {
-            _ = self;
-            return @min(1.0, @max(0.0, value));
+            return @min(self.max, @max(self.min, value));
         }
     };
 }

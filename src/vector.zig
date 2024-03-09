@@ -9,6 +9,8 @@ x: f64,
 y: f64,
 z: f64,
 
+pub const ORIGIN = init(0, 0, 0);
+
 pub fn init(x: f64, y: f64, z: f64) Self {
     return .{ .x = x, .y = y, .z = z,};
 }

@@ -37,4 +37,13 @@ pub fn multiply(self: Self, scalar: f64) Self {
     };
 }
 
+pub fn divide(self: Self, scalar: f64) Self {
+    return Self {
+    .r = self.r / scalar,
+    .g = self.g / scalar,
+    .b = self.b / scalar,
+    .a = self.a,
+    };
+}
+
 
