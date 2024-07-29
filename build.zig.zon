@@ -15,6 +15,10 @@
     // Once all dependencies are fetched, `zig build` no longer requires
     // internet connectivity.
     .dependencies = .{
+        .raylib = .{
+            .url = "https://github.com/raysan5/raylib/archive/f4b5622ba3a89bf1044ab7ba72384fb27c4837fe.tar.gz",
+            .hash = "122067f46cb54531622d3029256f273dcc2e435865fea262ba93ebb77d113a52d541",
+        },
     },
     .paths = .{
         // This makes *all* files, recursively, included in this package. It is generally

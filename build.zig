@@ -1,22 +1,27 @@
 const std = @import("std");
-const raySdk = @import("raylib/src/build.zig");
 
 pub fn build(b: *std.Build) void { const target = b.standardTargetOptions(.{});
 
     const optimize = b.standardOptimizeOption(.{});
 
+    const raylib_dep = b.dependency("raylib", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
     const exe = b.addExecutable(.{
     .name = "zigray",
-    .root_source_file = .{ .path = "src/main.zig" },
+    .root_source_file =  b.path("src/main.zig"),
     .target = target,
     .optimize = optimize,
     });
 
-    b.installArtifact(exe);
+    exe.addIncludePath(raylib_dep.path("src/"));
+    exe.linkLibC();
 
-    const raylib = raySdk.addRaylib(b, target, optimize, .{}) catch unreachable;
-    exe.addIncludePath(.{ .path = "raylib/src" });
-    exe.linkLibrary(raylib);
+    exe.linkLibrary(raylib_dep.artifact("raylib"));
+
+    b.installArtifact(exe);
 
     const run_cmd = b.addRunArtifact(exe);
 
